@@ -525,37 +525,20 @@ public class OAuthWebviewHelper implements KeyChainAliasCallback {
                 return true;
             }
 
-            // Check if user entered a custom domain
-            String host = uri.getHost();
-            Pattern customDomainPattern = SalesforceSDKManager.getInstance().getCustomDomainInferencePattern();
-            if (host != null && !getLoginUrl().contains(host) && customDomainPattern != null
-                    && customDomainPattern.matcher(uri.toString()).find()) {
+            // HEB PartnerNet, Handle OneLogin download and enrollment urls
+            if (uri.toString().contains("otpauth://") || uri.toString().startsWith("https://play.google.com/")) {
                 try {
-                    String baseUrl = "https://" + uri.getHost();
-                    LoginServerManager serverManager = SalesforceSDKManager.getInstance().getLoginServerManager();
-                    LoginServerManager.LoginServer loginServer = serverManager.getLoginServerFromURL(baseUrl);
-
-                    // Check if url is already in server list
-                    if (loginServer == null) {
-                        // Add also sets as selected
-                        serverManager.addCustomLoginServer("Custom Domain", baseUrl);
-                    } else {
-                        serverManager.setSelectedLoginServer(loginServer);
-                    }
-
-                    // Set title to new login url
-                    loginOptions.setLoginUrl(baseUrl);
-                    // Checks the config for the selected login server
-                    (new AuthConfigTask(this)).execute();
-                } catch (Exception e) {
-                    SalesforceSDKLogger.e(TAG, "Unable to retrieve auth config.");
+                    final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    getContext().startActivity(intent);
+                    return true;
+                } catch (ActivityNotFoundException e) {
+                    // nothing useful we can do here other than let the webview try and load the url
                 }
             }
 
-            String formattedUrl = uri.toString().replace("///", "/").toLowerCase(Locale.US);
-            String callbackUrl = loginOptions.getOauthCallbackUrl().replace("///", "/").toLowerCase(Locale.US);
-            boolean authFlowFinished = formattedUrl.startsWith(callbackUrl);
-            if (authFlowFinished) {
+            boolean isDone = uri.toString().replace("///", "/").toLowerCase(Locale.US).startsWith(loginOptions.getOauthCallbackUrl().replace("///", "/").toLowerCase(Locale.US));
+
+            if (isDone) {
                 Map<String, String> params = UriFragmentParser.parse(uri);
                 String error = params.get("error");
                 // Did we fail?
@@ -574,8 +557,7 @@ public class OAuthWebviewHelper implements KeyChainAliasCallback {
                     }
                 }
             }
-
-            return authFlowFinished;
+            return isDone;
         }
 
         @Override

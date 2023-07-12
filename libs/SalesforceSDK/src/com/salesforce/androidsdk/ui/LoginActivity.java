@@ -48,7 +48,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
@@ -124,9 +123,10 @@ public class LoginActivity extends AppCompatActivity
         // Getting login options from intent's extras.
         final LoginOptions loginOptions = LoginOptions.fromBundleWithSafeLoginUrl(getIntent().getExtras());
 
+        // 8/15/2022 - HEB PMA-575: Allow screenshots on login screen for better troubleshooting
         // Protect against screenshots.
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+//                WindowManager.LayoutParams.FLAG_SECURE);
 
         // Fetches auth config if required.
         try {
@@ -272,9 +272,11 @@ public class LoginActivity extends AppCompatActivity
         return RuntimeConfig.getRuntimeConfig(this).getBoolean(ConfigKey.RequireCertAuth);
     }
 
+
     protected OAuthWebviewHelper getOAuthWebviewHelper(OAuthWebviewHelperEvents callback,
             LoginOptions loginOptions, WebView webView, Bundle savedInstanceState) {
-        return new OAuthWebviewHelper(this, callback, loginOptions, webView, savedInstanceState);
+        // HEB PartnerNet: Attempt to fix login loop errors by setting shouldReloadPage to false
+        return new OAuthWebviewHelper(this, callback, loginOptions, webView, savedInstanceState, false);
     }
 
     @Override
