@@ -51,7 +51,7 @@ internal class BiometricAuthenticationManager: AppLockManager(
     override fun shouldLock(): Boolean {
         val elapsedTime = System.currentTimeMillis() - lastBackgroundTimestamp
         val account = SalesforceSDKManager.getInstance().userAccountManager.currentAccount ?: return false
-        val userAccount = SalesforceSDKManager.getInstance().userAccountManager.buildUserAccount(account)
+        val userAccount = SalesforceSDKManager.getInstance().userAccountManager.buildUserAccount(account) ?: return false
         val (enabled, timeout) = getPolicy(userAccount)
 
         return enabled && (elapsedTime > timeout)
