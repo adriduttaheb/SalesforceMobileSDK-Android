@@ -48,7 +48,7 @@
             android:theme="@style/SalesforceSDK"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true" />
 
         <!-- Screen Lock Activity-->
