@@ -1377,7 +1377,9 @@ public class SalesforceSDKManager implements LifecycleObserver {
                 if (intent.hasExtra(USER_ACCOUNT)) {
                     userAccount = new UserAccount(intent.getBundleExtra(USER_ACCOUNT));
                 }
-                cleanUp(userAccount);
+                if (userAccount != null) {
+                    cleanUp(userAccount);
+                }
             }
         }
     }
