@@ -5,9 +5,8 @@ rootProject.ext["PUBLISH_VERSION"] = "11.1.0"
 rootProject.ext["PUBLISH_ARTIFACT_ID"] = "SmartStore"
 
 plugins {
-    `android-library`
-    `kotlin-android`
-    `publish-module`
+    id("android-library")
+    id("kotlin-android")
 }
 
 dependencies {
