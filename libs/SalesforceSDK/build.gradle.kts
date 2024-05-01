@@ -1,3 +1,4 @@
+
 @file:Suppress("UnstableApiUsage")
 
 rootProject.ext["PUBLISH_GROUP_ID"] = "com.salesforce.mobilesdk"
@@ -27,6 +28,9 @@ dependencies {
 }
 
 android {
+    buildFeatures {
+        buildConfig = true
+    }
     namespace = "com.salesforce.androidsdk"
     testNamespace = "com.salesforce.androidsdk.tests"
 
@@ -80,5 +84,14 @@ android {
     buildFeatures {
         renderScript = true
         aidl = true
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_18
+        targetCompatibility = JavaVersion.VERSION_18
+    }
+
+    kotlinOptions {
+        jvmTarget = "18"
     }
 }
