@@ -861,7 +861,7 @@ public class SalesforceSDKManager implements LifecycleObserver {
     private void cleanUp(Activity frontActivity, Account account, boolean shouldDismissActivity) {
         final UserAccount userAccount = UserAccountManager.getInstance().buildUserAccount(account);
 
-        if(account != null) {
+        if(account != null && userAccount != null) {
             // Clean up in this process
             cleanUp(userAccount);
 
