@@ -1,7 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 rootProject.ext["PUBLISH_GROUP_ID"] = "com.salesforce.mobilesdk"
-rootProject.ext["PUBLISH_VERSION"] = "11.1.0"
+rootProject.ext["PUBLISH_VERSION"] = "12.0.1"
 rootProject.ext["PUBLISH_ARTIFACT_ID"] = "MobileSync"
 
 plugins {
@@ -13,7 +13,7 @@ dependencies {
     api(project(":libs:SmartStore"))
     api("androidx.appcompat:appcompat:1.6.1")
     api("androidx.appcompat:appcompat-resources:1.6.1")
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.12.0")
     androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test:rules:1.5.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -23,10 +23,10 @@ android {
     namespace = "com.salesforce.androidsdk.mobilesync"
     testNamespace = "com.salesforce.androidsdk.mobilesync.tests"
 
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 26
     }
 
     buildTypes {
@@ -54,7 +54,7 @@ android {
         }
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes += setOf("META-INF/LICENSE", "META-INF/LICENSE.txt", "META-INF/DEPENDENCIES", "META-INF/NOTICE")
         }
@@ -73,5 +73,10 @@ android {
     buildFeatures {
         renderScript = true
         aidl = true
+        buildConfig = true
     }
+}
+
+kotlin {
+    jvmToolchain(17)
 }
