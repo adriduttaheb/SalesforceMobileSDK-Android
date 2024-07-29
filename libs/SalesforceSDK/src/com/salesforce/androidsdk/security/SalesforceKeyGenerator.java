@@ -30,6 +30,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Base64;
 
+import com.salesforce.androidsdk.analytics.security.CipherMode;
 import com.salesforce.androidsdk.analytics.security.Encryptor;
 import com.salesforce.androidsdk.app.SalesforceSDKManager;
 import com.salesforce.androidsdk.util.SalesforceSDKLogger;
@@ -160,7 +161,7 @@ public class SalesforceKeyGenerator {
         // Checks if we have a unique identifier stored.
         if (id != null) {
             final PrivateKey privateKey = KeyStoreWrapper.getInstance().getRSAPrivateKey(KEYSTORE_ALIAS);
-            uniqueId = Encryptor.decryptWithRSA(privateKey, id, Encryptor.CipherMode.RSA_PKCS1);
+            uniqueId = Encryptor.decryptWithRSA(privateKey, id, CipherMode.RSA_PKCS1);
             if (uniqueId == null) {
                 SalesforceSDKLogger.e(TAG, "Unable to decrpyt unique identifier stored");
             }
@@ -170,7 +171,7 @@ public class SalesforceKeyGenerator {
         if (uniqueId == null) {
             uniqueId = createUniqueId(length);
             final PublicKey publicKey = KeyStoreWrapper.getInstance().getRSAPublicKey(KEYSTORE_ALIAS);
-            final String encryptedKey = Encryptor.encryptWithRSA(publicKey, uniqueId, Encryptor.CipherMode.RSA_PKCS1);
+            final String encryptedKey = Encryptor.encryptWithRSA(publicKey, uniqueId, CipherMode.RSA_PKCS1);
             storeInSharedPrefs(ID_PREFIX + name, encryptedKey);
         }
         return uniqueId;

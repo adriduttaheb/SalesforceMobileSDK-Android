@@ -34,7 +34,7 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.salesforce.androidsdk.accounts.UserAccount
 import com.salesforce.androidsdk.accounts.UserAccountManager
-import com.salesforce.androidsdk.analytics.security.Encryptor
+import com.salesforce.androidsdk.analytics.security.CipherMode
 import com.salesforce.androidsdk.app.Features.FEATURE_PUSH_NOTIFICATIONS
 import com.salesforce.androidsdk.app.SalesforceSDKManager
 import com.salesforce.androidsdk.auth.HttpAccess.DEFAULT
@@ -246,7 +246,7 @@ open class PushService {
                 val apiVersion = ApiVersionStrings.getVersionNumber(SalesforceSDKManager.getInstance().appContext)
                 // TODO remove once MSDK default api version is 61 or greater
                 if (apiVersion.compareTo("v61.0") >= 0) {
-                    fields[CIPHER_NAME] = Encryptor.CipherMode.RSA_OAEP_SHA256.name
+                    fields[CIPHER_NAME] = CipherMode.RSA_OAEP_SHA256.name
                 }
 
                 var status = REGISTRATION_STATUS_FAILED
